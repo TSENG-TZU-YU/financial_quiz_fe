@@ -188,6 +188,7 @@ function Quiz() {
                         輸入投資金額
                         <input
                             type="number"
+                            className="hide-arrows"
                             value={moneyVal}
                             onChange={(e) => {
                                 setMoneyVal(e.target.value);
@@ -203,7 +204,7 @@ function Quiz() {
                     </div>
                 </div>
 
-                <div className={`email ${nextPage !== false ? 'scrollPage' : ''}`}>
+                <div className={`email  ${nextPage !== false ? 'scrollPage' : ''}`}>
                     <div>
                         輸入email
                         <input
@@ -229,3 +230,8 @@ function Quiz() {
 }
 
 export default Quiz;
+
+
+
+
+
