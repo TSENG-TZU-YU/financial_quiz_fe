@@ -1,9 +1,8 @@
-import React from 'react'
+import React from 'react';
+import '../styles/pageStyles/money.scss';
 
 function Money() {
-  return (
-    <div>Money</div>
-  )
+    return <div>Money</div>;
 }
 
-export default Money
+export default Money;

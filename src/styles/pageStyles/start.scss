@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Ranga:700');
+$text-color: #000000;
+
+body {
+    color: darken($text-color, 10);
+    font-family: 'Ranga', cursive;
+}
+
+.main {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    text-shadow: 10px 10px 0 #33cccc;
+    font-size: 300%;
+}
