@@ -10,7 +10,7 @@ function QuizOne() {
     const [nextPage, setNextPage] = useState(false);
     const [toEndPage, setToEndPage] = useState(false);
 
-    console.log('object', quit1Val);
+    // console.log('object', quit1Val);
     return (
         <>
             <div className="oneContainer">
