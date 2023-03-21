@@ -1,9 +1,11 @@
 import { React, useEffect, useState } from 'react';
+import axios from 'axios';
 
 import './index.scss';
 
 function Quiz() {
     const [start, setStart] = useState(false);
+    // const [value, setValue] = useState([{ quit1Val: '', quit2Val: '', moneyVal: '', emailVal: '' }]);
     const [quit1Val, setQuit1Val] = useState('');
     const [quit2Val, setQuit2Val] = useState('');
     const [moneyVal, setMoneyVal] = useState('');
@@ -11,7 +13,22 @@ function Quiz() {
     const [nextPage, setNextPage] = useState(false);
     const [toEndPage, setToEndPage] = useState(false);
 
-    console.log('object', quit1Val);
+    // console.log('object', quit1Val);
+
+    let handler = async () => {
+        try {
+            let res = await axios.get(`http://127.0.0.1:8000/api/financial`, {
+                quit1Val: quit1Val,
+                quit2Val: quit2Val,
+                moneyVal: moneyVal,
+                emailVal: emailVal,
+            });
+            // setGetHandler(res.data);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     useEffect(() => {
         const hero = document.querySelector('.main');
         const text = hero.querySelector('.h1');
@@ -221,6 +238,7 @@ function Quiz() {
                         >
                             輸入完成
                         </button>
+                        <button onClick={handler}>送出</button>
                     </div>
                 </div>
                 <div className={`end ${toEndPage !== false ? 'scrollPage' : ''}`}>end</div>
