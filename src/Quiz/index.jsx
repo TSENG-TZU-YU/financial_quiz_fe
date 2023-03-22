@@ -22,6 +22,8 @@ function Quiz() {
     const [quiz, setQuiz] = useState('0');
     const [invest, setInvest] = useState('');
 
+    // total number
+    let totalMoney = Number(quit1Val) + Number(quit1Val);
 
     // getdata
     useEffect(() => {
@@ -40,7 +42,6 @@ function Quiz() {
     }, []);
 
     function total() {
-        let totalMoney = Number(quit1Val) + Number(quit1Val);
         if (totalMoney === 2) {
             setInvest('投資組1');
         }
@@ -65,6 +66,7 @@ function Quiz() {
                     quit2Val: quit2Val,
                     moneyVal: moneyVal,
                     emailVal: emailVal,
+                    total: totalMoney,
                 },
             });
             setTimeout(() => {
