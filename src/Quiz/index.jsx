@@ -5,25 +5,22 @@ import './index.scss';
 
 function Quiz() {
     const [start, setStart] = useState(false);
-    // const [value, setValue] = useState([{ quit1Val: '', quit2Val: '', moneyVal: '', emailVal: '' }]);
     const [quit1Val, setQuit1Val] = useState('');
     const [quit2Val, setQuit2Val] = useState('');
     const [moneyVal, setMoneyVal] = useState('');
     const [emailVal, setEmailVal] = useState('');
     const [nextPage, setNextPage] = useState(false);
     const [toEndPage, setToEndPage] = useState(false);
+    const [getData, setGetData] = useState('');
 
     // console.log('object', quit1Val);
 
     let handler = async () => {
         try {
-            let res = await axios.get(`http://127.0.0.1:8000/api/financial`, {
-                quit1Val: quit1Val,
-                quit2Val: quit2Val,
-                moneyVal: moneyVal,
-                emailVal: emailVal,
+            let res = await axios.post(`http://127.0.0.1:8000/api/financial`, {
+                result: { quit1Val: quit1Val, quit2Val: quit2Val, moneyVal: moneyVal, emailVal: emailVal },
             });
-            // setGetHandler(res.data);
+            console.log('object', res.data);
         } catch (err) {
             console.log(err);
         }
