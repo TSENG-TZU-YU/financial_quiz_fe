@@ -11,8 +11,7 @@ function Quiz() {
     const [emailVal, setEmailVal] = useState('');
     const [nextPage, setNextPage] = useState(false);
     const [toEndPage, setToEndPage] = useState(false);
-    const [getData, setGetData] = useState('');
-
+    const [checkMail, setCheckMail] = useState('');
 
     let handler = async () => {
         try {
@@ -52,6 +51,7 @@ function Quiz() {
 
         hero.addEventListener('mousemove', shadow);
     }, []);
+
     return (
         <>
             <div className="oneContainer">
@@ -228,10 +228,25 @@ function Quiz() {
                                 setEmailVal(e.target.value);
                             }}
                         />
-                        <button onClick={handler}>送出</button>
+                        <button
+                            onClick={() => {
+                                const regEmail = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+                                const result = regEmail.test(emailVal);
+
+                                if (result) {
+                                    setCheckMail('email合法');
+                                    handler();
+                                } else {
+                                    setCheckMail('email不合法');
+                                }
+                            }}
+                        >
+                            送出
+                        </button>
                     </div>
+                    {checkMail === 'email不合法' ? <div>請輸入正確email</div> : ''}
                 </div>
-                <div className={`end ${toEndPage !== false ? 'scrollPage' : ''}`}>end</div>
+                <div className={`end ${toEndPage !== false && checkMail === 'email合法' ? 'scrollPage' : ''}`}>end</div>
             </div>
         </>
     );
