@@ -11,10 +11,26 @@ function Quiz() {
     const [emailVal, setEmailVal] = useState('');
     const [nextPage, setNextPage] = useState(false);
     const [toEndPage, setToEndPage] = useState(false);
-    const [getData, setGetData] = useState('');
+    const [getQuiz1, setGetQuiz1] = useState([]);
+    const [getQuiz2, setGetQuiz2] = useState([]);
 
-    // console.log('object', quit1Val);
+    // getdata
+    useEffect(() => {
+        async function getData() {
+            try {
+                let res = await axios.get(`http://127.0.0.1:8000/api/financial`);
+                // console.log('object', res.data);
+                setGetQuiz1(res.data.quiz1);
+                setGetQuiz2(res.data.quiz2);
 
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        getData();
+    }, []);
+
+    // post result
     let handler = async () => {
         try {
             let res = await axios.post(`http://127.0.0.1:8000/api/financial`, {
@@ -25,6 +41,25 @@ function Quiz() {
         } catch (err) {
             console.log(err);
         }
+    };
+
+    let quiz1Name = () => {
+        let name = quit1Val;
+        if (name === '') return '';
+        if (name === '1') return getQuiz1[0].name;
+        if (name === '2') return getQuiz1[1].name;
+        if (name === '3') return getQuiz1[2].name;
+        if (name === '4') return getQuiz1[3].name;
+        if (name === '5') return getQuiz1[4].name;
+        if (name === '6') return getQuiz1[5].name;
+    };
+
+    let quiz2Name = () => {
+        let name = quit2Val;
+        if (name === '') return '';
+        if (name === '1') return getQuiz2[0].name;
+        if (name === '2') return getQuiz2[1].name;
+        if (name === '3') return getQuiz2[2].name;
     };
 
     useEffect(() => {
@@ -85,8 +120,8 @@ function Quiz() {
                         >
                             重新規劃
                         </button>
-                        <p>{quit1Val}</p>
-                        <p>{quit2Val}</p>
+                        <p>{quiz1Name()}</p>
+                        <p>{quiz2Name()}</p>
                         <p>{moneyVal}</p>
                         <p>{emailVal}</p>
                     </div>
@@ -95,107 +130,39 @@ function Quiz() {
                 )}
 
                 <div className={`one  ${start ? 'scrollPage' : ''}`}>
-                    <div>
-                        <input
-                            type="radio"
-                            name="quit1One"
-                            value="1"
-                            onChange={(e) => {
-                                setQuit1Val(e.target.value);
-                            }}
-                        />
-                        創業基金
-                    </div>
-                    <div>
-                        <input
-                            type="radio"
-                            name="quitOne"
-                            value="2"
-                            onChange={(e) => {
-                                setQuit1Val(e.target.value);
-                            }}
-                        />
-                        小孩教育基金
-                    </div>
-                    <div>
-                        <input
-                            type="radio"
-                            name="quitOne"
-                            value="3"
-                            onChange={(e) => {
-                                setQuit1Val(e.target.value);
-                            }}
-                        />
-                        提早退休
-                    </div>
-                    <div>
-                        <input
-                            type="radio"
-                            name="quitOne"
-                            value="4"
-                            onChange={(e) => {
-                                setQuit1Val(e.target.value);
-                            }}
-                        />
-                        就想存點錢
-                    </div>
-                    <div>
-                        <input
-                            type="radio"
-                            name="quitOne"
-                            value="5"
-                            onChange={(e) => {
-                                setQuit1Val(e.target.value);
-                            }}
-                        />
-                        旅遊購物
-                    </div>
-                    <div>
-                        <input
-                            type="radio"
-                            name="quitOne"
-                            value="6"
-                            onChange={(e) => {
-                                setQuit1Val(e.target.value);
-                            }}
-                        />
-                        就想賺大錢
-                    </div>
+                    {getQuiz1.map((v, i) => {
+                        return (
+                            <div key={i}>
+                                <input
+                                    type="radio"
+                                    name="quit1One"
+                                    value={v.id}
+                                    onChange={(e) => {
+                                        setQuit1Val(e.target.value);
+                                    }}
+                                />
+                                {v.name}
+                            </div>
+                        );
+                    })}
                 </div>
-                <div className={`two  ${quit1Val !== '' ? 'scrollPage' : ''}`}>
-                    <div>
-                        <input
-                            type="radio"
-                            name="quitTwo"
-                            value="1"
-                            onChange={(e) => {
-                                setQuit2Val(e.target.value);
-                            }}
-                        />
-                        只想穩穩獲利
-                    </div>
-                    <div>
-                        <input
-                            type="radio"
-                            name="quitTwo"
-                            value="2"
-                            onChange={(e) => {
-                                setQuit2Val(e.target.value);
-                            }}
-                        />
-                        可以承擔一點風險
-                    </div>
-                    <div>
-                        <input
-                            type="radio"
-                            name="quitTwo"
-                            value="3"
-                            onChange={(e) => {
-                                setQuit2Val(e.target.value);
-                            }}
-                        />
-                        想賺多一點，可以承擔高風險
-                    </div>
+
+                <div className={`two  ${quit1Val ? 'scrollPage' : ''}`}>
+                    {getQuiz2.map((v, i) => {
+                        return (
+                            <div key={i}>
+                                <input
+                                    type="radio"
+                                    name="quit1One"
+                                    value={v.id}
+                                    onChange={(e) => {
+                                        setQuit2Val(e.target.value);
+                                    }}
+                                />
+                                {v.name}
+                            </div>
+                        );
+                    })}
                 </div>
 
                 <div className={`money  ${quit2Val !== '' ? 'scrollPage' : ''}`}>
