@@ -20,6 +20,7 @@ function Quiz() {
                 result: { quit1Val: quit1Val, quit2Val: quit2Val, moneyVal: moneyVal, emailVal: emailVal },
             });
             console.log('object', res.data);
+            setToEndPage(true);
         } catch (err) {
             console.log(err);
         }
@@ -227,13 +228,6 @@ function Quiz() {
                                 setEmailVal(e.target.value);
                             }}
                         />
-                        <button
-                            onClick={() => {
-                                setToEndPage(true);
-                            }}
-                        >
-                            輸入完成
-                        </button>
                         <button onClick={handler}>送出</button>
                     </div>
                 </div>
