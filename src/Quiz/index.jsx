@@ -231,7 +231,6 @@ function Quiz() {
                         </button>
                     </div>
                     <div>
-                        {' '}
                         <select
                             value={moneyVal}
                             onChange={(e) => {
