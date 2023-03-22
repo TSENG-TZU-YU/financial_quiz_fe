@@ -1,7 +1,8 @@
 import { React, useEffect, useState } from 'react';
 import axios from 'axios';
-
 import './index.scss';
+
+import { API_URL } from '../utils/config';
 
 function Quiz() {
     const [start, setStart] = useState(false);
@@ -13,13 +14,16 @@ function Quiz() {
     const [toEndPage, setToEndPage] = useState(false);
     const [getQuiz1, setGetQuiz1] = useState([]);
     const [getQuiz2, setGetQuiz2] = useState([]);
-    const [checkMail, setCheckMail] = useState('');
+    const [checkMail, setCheckMail] = useState(false);
+    const [checkMoney, setCheckMoney] = useState(false);
+    const [quiz, setQuiz] = useState('0');
+    const [invest, setInvest] = useState('');
 
     // getdata
     useEffect(() => {
         async function getData() {
             try {
-                let res = await axios.get(`http://127.0.0.1:8000/api/financial`);
+                let res = await axios.get(`${API_URL}/financial`);
                 // console.log('object', res.data);
                 setGetQuiz1(res.data.quiz1);
                 setGetQuiz2(res.data.quiz2);
@@ -27,16 +31,35 @@ function Quiz() {
                 console.log(err);
             }
         }
+
         getData();
     }, []);
+
+    function total() {
+        let totalMoney = Number(quit1Val) + Number(quit1Val);
+        if (totalMoney === 2) {
+            setInvest('投資組1');
+        }
+        if (totalMoney === 3) {
+            setInvest('投資組2');
+        }
+        if (totalMoney === 4) {
+            setInvest('投資組3');
+        }
+        if (totalMoney === 5) {
+            setInvest('投資組4');
+        }
+    }
 
     // post result
     let handler = async () => {
         try {
-            let res = await axios.post(`http://127.0.0.1:8000/api/financial`, {
+            let res = await axios.post(`${API_URL}/financial`, {
                 result: { quit1Val: quit1Val, quit2Val: quit2Val, moneyVal: moneyVal, emailVal: emailVal },
             });
+
             console.log('object', res.data);
+            total();
             setToEndPage(true);
         } catch (err) {
             console.log(err);
@@ -100,6 +123,7 @@ function Quiz() {
                             className="startBtn btn"
                             onClick={() => {
                                 setStart(true);
+                                setQuiz('1');
                             }}
                         >
                             START
@@ -121,6 +145,7 @@ function Quiz() {
                         >
                             重新規劃
                         </button>
+                        <p>{quiz}/4</p>
                         <p>{quiz1Name()}</p>
                         <p>{quiz2Name()}</p>
                         <p>{moneyVal}</p>
@@ -140,6 +165,7 @@ function Quiz() {
                                     value={v.id}
                                     onChange={(e) => {
                                         setQuit1Val(e.target.value);
+                                        setQuiz('2');
                                     }}
                                 />
                                 {v.name}
@@ -158,6 +184,7 @@ function Quiz() {
                                     value={v.id}
                                     onChange={(e) => {
                                         setQuit2Val(e.target.value);
+                                        setQuiz('3');
                                     }}
                                 />
                                 {v.name}
@@ -167,6 +194,7 @@ function Quiz() {
                 </div>
 
                 <div className={`money  ${quit2Val !== '' ? 'scrollPage' : ''}`}>
+                    <div>請輸入正確35 ~ 5000,000的整數數字</div>
                     <div>
                         輸入投資金額
                         <input
@@ -179,12 +207,40 @@ function Quiz() {
                         />
                         <button
                             onClick={() => {
-                                setNextPage(true);
+                                if (moneyVal > 35 && moneyVal < 5000000) {
+                                    setNextPage(true);
+                                    setQuiz('4');
+                                } else {
+                                    setCheckMoney(true);
+                                }
                             }}
                         >
                             輸入完成
                         </button>
                     </div>
+                    <div>
+                        {' '}
+                        <select
+                            value={moneyVal}
+                            onChange={(e) => {
+                                setMoneyVal(e.target.value);
+                            }}
+                        >
+                            <option>100~2000</option>
+                            <option>2000~4000</option>
+                            <option>4000~6000</option>
+                            <option>1000以上</option>
+                        </select>
+                        <button
+                            onClick={() => {
+                                setNextPage(true);
+                                setQuiz('4');
+                            }}
+                        >
+                            輸入完成
+                        </button>
+                    </div>
+                    {checkMoney ? <div>請輸入正確35 ~ 5000,000的整數數字</div> : ''}
                 </div>
 
                 <div className={`email  ${nextPage !== false ? 'scrollPage' : ''}`}>
@@ -203,19 +259,22 @@ function Quiz() {
                                 const result = regEmail.test(emailVal);
 
                                 if (result) {
-                                    setCheckMail('email合法');
+                                    setCheckMail(false);
                                     handler();
                                 } else {
-                                    setCheckMail('email不合法');
+                                    setCheckMail(true);
                                 }
                             }}
                         >
                             送出
                         </button>
                     </div>
-                    {checkMail === 'email不合法' ? <div>請輸入正確email</div> : ''}
+                    {checkMail ? <div>請輸入正確email</div> : ''}
                 </div>
-                <div className={`end ${toEndPage !== false && checkMail === 'email合法' ? 'scrollPage' : ''}`}>end</div>
+                <div className={`end ${toEndPage !== false && checkMail === false ? 'scrollPage' : ''}`}>
+                    <div>end</div>
+                    <div>投資建議 : {invest}</div>
+                </div>
             </div>
         </>
     );
