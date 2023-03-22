@@ -11,23 +11,15 @@ function Quiz() {
     const [emailVal, setEmailVal] = useState('');
     const [nextPage, setNextPage] = useState(false);
     const [toEndPage, setToEndPage] = useState(false);
-    // const [value, setValue] = useState([
-    //     { quit1Val: quit1Val, quit2Val: quit2Val, moneyVal: moneyVal, emailVal: emailVal },
-    // ]);
-    // console.log('object', value);
-    // console.log('quit1Val', quit1Val);
+    const [getData, setGetData] = useState('');
 
 
     let handler = async () => {
         try {
             let res = await axios.post(`http://127.0.0.1:8000/api/financial`, {
-                quit1Val: quit1Val,
-                quit2Val: quit2Val,
-                moneyVal: moneyVal,
-                emailVal: emailVal,
-                // value: value,
+                result: { quit1Val: quit1Val, quit2Val: quit2Val, moneyVal: moneyVal, emailVal: emailVal },
             });
-            // setGetHandler(res.data);
+            console.log('object', res.data);
         } catch (err) {
             console.log(err);
         }
