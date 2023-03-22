@@ -2,6 +2,7 @@ import { React, useEffect, useState } from 'react';
 import axios from 'axios';
 
 import './index.scss';
+import Loading from '../loading/MailLoading.jsx';
 
 function Quiz() {
     const [start, setStart] = useState(false);
@@ -14,6 +15,8 @@ function Quiz() {
     const [getQuiz1, setGetQuiz1] = useState([]);
     const [getQuiz2, setGetQuiz2] = useState([]);
     const [checkMail, setCheckMail] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [disabled, setDisabled] = useState(false);
 
     // getdata
     useEffect(() => {
@@ -33,9 +36,18 @@ function Quiz() {
     // post result
     let handler = async () => {
         try {
+            setIsLoading(true);
             let res = await axios.post(`http://127.0.0.1:8000/api/financial`, {
-                result: { quit1Val: quit1Val, quit2Val: quit2Val, moneyVal: moneyVal, emailVal: emailVal },
+                result: {
+                    quit1Val: quit1Val,
+                    quit2Val: quit2Val,
+                    moneyVal: moneyVal,
+                    emailVal: emailVal,
+                },
             });
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 500);
             console.log('object', res.data);
             setToEndPage(true);
         } catch (err) {
@@ -198,8 +210,10 @@ function Quiz() {
                             }}
                         />
                         <button
+                            disabled={`${disabled !== false ? 'disabled' : ''}`}
                             onClick={() => {
-                                const regEmail = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+                                const regEmail = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+                                // /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
                                 const result = regEmail.test(emailVal);
 
                                 if (result) {
@@ -208,10 +222,12 @@ function Quiz() {
                                 } else {
                                     setCheckMail('email不合法');
                                 }
+                                setDisabled(true);
                             }}
                         >
                             送出
                         </button>
+                        {isLoading ? <Loading /> : ''}
                     </div>
                     {checkMail === 'email不合法' ? <div>請輸入正確email</div> : ''}
                 </div>
