@@ -15,7 +15,6 @@ function Quiz() {
     const [getQuiz2, setGetQuiz2] = useState([]);
     const [checkMail, setCheckMail] = useState('');
 
-
     // getdata
     useEffect(() => {
         async function getData() {
@@ -24,7 +23,6 @@ function Quiz() {
                 // console.log('object', res.data);
                 setGetQuiz1(res.data.quiz1);
                 setGetQuiz2(res.data.quiz2);
-
             } catch (err) {
                 console.log(err);
             }
