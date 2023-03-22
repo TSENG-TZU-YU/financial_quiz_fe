@@ -109,6 +109,12 @@ $text-color: #000000;
         transform: translateX(100%);
         z-index: 30;
         transition: 0.5s all;
+
+        .hide-arrows::-webkit-outer-spin-button,
+        .hide-arrows::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
     }
     .email {
         width: 100vw;
