@@ -22,7 +22,6 @@ function Quiz() {
     const [quiz, setQuiz] = useState('0');
     const [invest, setInvest] = useState('');
 
-
     // getdata
     useEffect(() => {
         async function getData() {
@@ -59,7 +58,7 @@ function Quiz() {
     let handler = async () => {
         try {
             setIsLoading(true);
-            let res = await axios.post(`${API_URL}//financial`, {
+            let res = await axios.post(`${API_URL}/financial`, {
                 result: {
                     quit1Val: quit1Val,
                     quit2Val: quit2Val,
@@ -272,12 +271,12 @@ function Quiz() {
                                 const result = regEmail.test(emailVal);
 
                                 if (result) {
+                                    setDisabled(true);
                                     setCheckMail(false);
                                     handler();
                                 } else {
                                     setCheckMail(true);
                                 }
-                                setDisabled(true);
                             }}
                         >
                             送出
