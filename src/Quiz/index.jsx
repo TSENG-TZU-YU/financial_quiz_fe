@@ -22,6 +22,9 @@ function Quiz() {
     const [quiz, setQuiz] = useState('0');
     const [invest, setInvest] = useState('');
 
+    // total number
+    let totalMoney = Number(quit1Val) + Number(quit1Val);
+
     // getdata
     useEffect(() => {
         async function getData() {
@@ -39,7 +42,6 @@ function Quiz() {
     }, []);
 
     function total() {
-        let totalMoney = Number(quit1Val) + Number(quit1Val);
         if (totalMoney === 2) {
             setInvest('投資組1');
         }
@@ -64,6 +66,7 @@ function Quiz() {
                     quit2Val: quit2Val,
                     moneyVal: moneyVal,
                     emailVal: emailVal,
+                    total: totalMoney,
                 },
             });
             setTimeout(() => {
@@ -111,7 +114,6 @@ function Quiz() {
                 y = y + e.target.offsetTop;
             }
 
-            //how far should the text-shadow go
             const xWalk = Math.round((x / width) * walk - walk / 2);
             const yWalk = Math.round((y / height) * walk - walk / 2);
 
@@ -131,7 +133,7 @@ function Quiz() {
                         <div className="h1">理財小測驗</div>
                         <div className="h2">理財小測驗</div>
                         <button
-                            className="startBtn btn"
+                            className="startBtn btn cursor"
                             onClick={() => {
                                 setStart(true);
                                 setQuiz('1');
@@ -144,6 +146,7 @@ function Quiz() {
                 {start ? (
                     <div className="totalContainer">
                         <button
+                            className="cursor"
                             onClick={() => {
                                 setStart(false);
                                 setQuit1Val('');
@@ -236,6 +239,7 @@ function Quiz() {
                                 setMoneyVal(e.target.value);
                             }}
                         >
+                            <option value="0">請選擇金額</option>
                             <option>100~2000</option>
                             <option>2000~4000</option>
                             <option>4000~6000</option>
@@ -243,8 +247,12 @@ function Quiz() {
                         </select>
                         <button
                             onClick={() => {
-                                setNextPage(true);
-                                setQuiz('4');
+                                if (moneyVal === '' || moneyVal === '0') {
+                                    setCheckMoney(true);
+                                } else {
+                                    setNextPage(true);
+                                    setQuiz('4');
+                                }
                             }}
                         >
                             輸入完成
